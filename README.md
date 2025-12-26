@@ -1,17 +1,27 @@
-# STM Real-Time Bus Tracking Pipeline (Lakehouse)
+# STM Montreal - Real-Time Data Lakehouse
 
-## 📌 Project Overview
-End-to-end data engineering project to ingest, transform, and visualize Montreal (STM) bus positions in real-time. 
-The goal is to build a scalable **Medallion Architecture** using Databricks and Delta Lake.
+## Project Description
+Implementation of an end-to-end data pipeline to ingest and process STM (Société de transport de Montréal) bus positions. This project follows the Medallion Architecture to transform raw GTFS-Realtime data into analytical assets.
 
-## 🏗️ Architecture
-- **Source**: STM GTFS-Realtime API (Protobuf)
-- **Ingestion (Bronze)**: Python/Spark job running every 5 minutes. Raw files stored as `.pb` in UC Volumes.
-- **Transformation (Silver)**: (In Progress) Cleaning, deduplication, and schema enforcement.
-- **Serving (Gold)**: (Planned) Business-ready aggregates for Power BI.
+## Architecture & Design
+The system is built on a Lakehouse architecture using Databricks and Delta Lake.
 
-## 🛠️ Tech Stack
-- **Platform**: Databricks (Community Edition)
-- **Storage**: Delta Lake / Unity Catalog (Volumes)
-- **Language**: Python (PySpark), SQL
-- **Orchestration**: Databricks Workflows (Job Scheduler)
+1. **Bronze Layer**: Raw ingestion of Protobuf (API) to Delta tables. 
+   - Frequency: Every 5 minutes.
+   - Storage: Unity Catalog Volumes (.pb files) + Delta Table (Metadata & Raw Parse).
+2. **Silver Layer**: Data cleaning and enrichment (Current focus).
+   - Deduplication of static bus positions.
+   - Coordinate validation and timestamp normalization.
+3. **Gold Layer**: Analytical aggregates for visualization (Planned).
+
+## Technical Stack
+- **Compute**: Apache Spark / Databricks
+- **Storage**: Delta Lake (ACID Transactions)
+- **Orchestrator**: Databricks Workflows
+- **Format**: GTFS-Realtime (Protobuf)
+- **Language**: PySpark, SQL
+
+## Repository Structure
+- `/notebooks`: Core logic for Ingestion and Transformation.
+- `/sql`: DDL scripts for table initialization.
+- `/config`: JSON configurations for environment parameters.
